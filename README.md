@@ -1,16 +1,26 @@
-# locationdeneme
+# Basit Lokasyon Tespit ve Gösterma Uygulaması
 
-A new Flutter project.
 
-## Getting Started
+## Uygulama Tanımı
 
-This project is a starting point for a Flutter application.
+Bu Proje Basit bir şekilde Kullanıcıdan Konum izni ister. Konumunu tespit eder ve Haritada Konumunu Gösterir.
 
-A few resources to get you started if this is your first Flutter project:
+Bağımlılıklar:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+  geolocator: ^13.0.1 
+Bu Bağımlılık Cihazın mevcut Konumunu Tespit etmek için kullanulmıştır.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  flutter_map: ^7.0.2
+Bu Bağımlılık Harita Gösterimi için Kullanılmıştır.
+
+  latlong2: ^0.9.1
+Bu Bağımlılık Basit Kordinat Hesapları için kullnılmıştır.
+
+  permission_handler: ^11.3.1
+Bu Bağımlılık Kullanıcıdan izin istemek ve izinleri kontrol etmek için kullanılmıştır.
+
+  flutter_riverpod: ^2.5.1
+Bu Bağımlılık Durum Yönetimi için kullanılmıştır. 
+
+
+
