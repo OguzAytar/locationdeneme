@@ -19,6 +19,9 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.23.3" # Flutter'ın belirli bir stable sürümünü burada belirtiyoruz
+      # Flutter Doctor
+      - name: Run Flutter Doctor
+        run: flutter doctor
 
       # Bağımlılıkları yükleme
       - name: Install dependencies
