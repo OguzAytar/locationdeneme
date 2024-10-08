@@ -15,26 +15,23 @@ jobs:
       - uses: actions/checkout@v4
 
       # Flutter SDK'yı kurma
-      # Bu adım, en son stable Flutter sürümünü kurar.
+
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "stable"
+          flutter-version: "3.23.3" # Flutter'ın belirli bir stable sürümünü burada belirtiyoruz
 
       # Bağımlılıkları yükleme
       - name: Install dependencies
         run: flutter pub get
 
       # Format kontrolü (opsiyonel)
-      # Eğer commit sırasında otomatik formatlama kontrolü istiyorsanız
       - name: Verify formatting
         run: flutter format --set-exit-if-changed .
 
-      # Kod analizi (opsiyonel)
-      # Dart ve Flutter kodu için analiz yapılır
+      # Kod analizi
       - name: Analyze project source
         run: flutter analyze
 
       # Testleri çalıştırma
-      # Flutter projenizdeki testleri çalıştırmak için bu komut kullanılır
       - name: Run tests
         run: flutter test
