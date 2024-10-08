@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -28,45 +27,60 @@ class _FindLocationState extends ConsumerState<FindLocation> {
       body: Stack(
         children: [
           // Ana içerik
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('Enlem: ${state.enlem}'),
-                Text('Boylam: ${state.boylam}'),
-                TextButton(
-                  onPressed: () {
-                    _konumIzniniKontrolEt(viewModel);
-                  },
-                  child: const Text('Konum Bul'),
-                ),
-                if (state.boylam != 0 && state.enlem != 0)
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MapScreen(latitude: state.enlem, longitude: state.boylam),
-                      ));
-                    },
-                    child: const Text('Konuma git'),
-                  ),
-              ],
-            ),
-          ),
+          _viewField(state, viewModel, context),
           // Loading ve BackdropFilter
           if (state.isLoading) ...[
-            BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-              child: Container(
-                color: Colors.black.withOpacity(0.5),
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            ),
+            _backDrop(),
           ],
         ],
       ),
+    );
+  }
+
+  BackdropFilter _backDrop() {
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+      child: Container(
+        color: Colors.black.withOpacity(0.5),
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    );
+  }
+
+  Center _viewField(FindLocationViewModel state, FindLocationNotifier viewModel, BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text('Enlem: ${state.enlem}'),
+          Text('Boylam: ${state.boylam}'),
+          _findLocationButton(viewModel),
+          if (state.boylam != 0 && state.enlem != 0) _goToLocationButton(context, state),
+        ],
+      ),
+    );
+  }
+
+  TextButton _findLocationButton(FindLocationNotifier viewModel) {
+    return TextButton(
+      onPressed: () {
+        _konumIzniniKontrolEt(viewModel);
+      },
+      child: const Text('Konum Bul'),
+    );
+  }
+
+  TextButton _goToLocationButton(BuildContext context, FindLocationViewModel state) {
+    return TextButton(
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MapScreen(latitude: state.enlem, longitude: state.boylam),
+        ));
+      },
+      child: const Text('Konuma git'),
     );
   }
 
@@ -85,15 +99,12 @@ class _FindLocationState extends ConsumerState<FindLocation> {
   Future<void> _konumuAl(FindLocationNotifier viewModel) async {
     bool servisAcikMi = await Geolocator.isLocationServiceEnabled();
     if (!servisAcikMi) {
-      final res = await Geolocator.openLocationSettings();
-      log(res.toString());
+      await Geolocator.openLocationSettings();
     } else {
       viewModel.setIsLoading(true);
       Position position = await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: LocationAccuracy.high));
       viewModel.setKonum(position.latitude, position.longitude);
       viewModel.setIsLoading(false);
-      log('enlem: ${position.latitude}');
-      log('boylam: ${position.longitude}');
     }
   }
 }
